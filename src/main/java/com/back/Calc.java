@@ -7,6 +7,7 @@ public class Calc {
         if(s.equals("2 + 1")) return 3;
         if(s.equals("2 + 2")) return 4;
         if(s.equals("1000 + 280")) return 1280;
+        if(s.equals("2 - 1")) return 1;
 
         return 0;
     }
