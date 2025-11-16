@@ -5,21 +5,21 @@ public class Calc {
     public static int run(String s) {
         // "10 + 20 + 30 == 60"
 
-        if (s.equals("10 + 20 + 30")) return 60;
-        if (s.equals("10 - 20 + 30")) return 20;
+//        if (s.equals("10 + 20 + 30")) return 60;
+//        if (s.equals("10 - 20 + 30")) return 20;
 
-        String[] str = s.split(" ");
+        if(!s.contains(" ")) return Integer.parseInt(s);
+        String[] str = s.split(" ", 3);
 
         int a = Integer.parseInt(str[0].trim());
-        int b = Integer.parseInt(str[2].trim());
-        String calc = str[1];
+        String calc = str[1].trim();
 
         switch (calc) {
             case "+" -> {
-                return a + b;
+                return a + run(str[2].trim());
             }
             case "-" -> {
-                return a - b;
+                return a - run(str[2].trim());
             }
         }
 
