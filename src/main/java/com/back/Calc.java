@@ -4,20 +4,37 @@ public class Calc {
 
     public static int run(String s) {
 
-        // (10 + 20)
 
+
+        s = s.trim();
         // 필수로
         if(s.contains("-")) {
             s = s.replace("- ", "+ -");
         }
 
-        // 괄호 벗기기
+        // (10 + 20) * 3
+        // 괄호 벗기기 + 괄호 먼저 계산
         if(s.contains("(") && s.contains(")")) {
-            String tmp = s.replaceAll("[()]", "");
+            if(s.contains("*")) {
+                String answer = "";
+                String[] tmp = s.split("\\*");
+                for(String str : tmp) {
+                    str = str.trim();
+                    if (str.contains("(") && str.contains(")")) {
+                        answer += String.valueOf(run(str.replaceAll("[()]", "")));
+                    }
+                    else answer += " * " + str;
+                }
 
-            return run(tmp.trim());
+                return run(answer);
+            }
+
+            else {
+                String tmp = s.replaceAll("[()]", "");
+                return run(tmp);
+            }
+
         }
-
 
         if(s.contains("*") && !s.contains("+")) {
             String[] arr = s.split("\\*");
@@ -36,6 +53,7 @@ public class Calc {
                 if(str.contains("*")) sum += run(str.trim());
                 else sum += Integer.parseInt(str.trim());
             }
+            return sum;
         }
 
         return sum;
