@@ -4,12 +4,20 @@ public class Calc {
 
     public static int run(String s) {
 
-        // 10 + 5 * 2
+        // (10 + 20)
 
         // 필수로
         if(s.contains("-")) {
             s = s.replace("- ", "+ -");
         }
+
+        // 괄호 벗기기
+        if(s.contains("(") && s.contains(")")) {
+            String tmp = s.replaceAll("[()]", "");
+
+            return run(tmp.trim());
+        }
+
 
         if(s.contains("*") && !s.contains("+")) {
             String[] arr = s.split("\\*");
