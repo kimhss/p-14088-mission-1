@@ -10,32 +10,38 @@ public class Calc {
             s = s.replace("- ", "+ -");
         }
 
-        // -(10 + 5)
+        // 3 * 1 + (1 - (4 * 1 - (1 - 1)))
         // 괄호 벗기기 + 괄호 먼저 계산
         if(s.contains("(") && s.contains(")")) {
             String result = "";
             String pareBits = "";
-            boolean isParenthesis = false;
+            int depth = 0;
+
             String[] sBits = s.split("");
             for(int i = 0; i < sBits.length; i++) {
                 if(sBits[i].equals("(")) {
-                    isParenthesis = true;
+                    depth++;
+                    if(depth == 1) continue; // 가장 바깥 괄호는 저장하지 않음
+                    else pareBits += sBits[i]; // 내부 괄호는 그대로 저장
                     continue;
-
                 }
+
                 if(sBits[i].equals(")")) {
-                    if(!isParenthesis) continue;
-                    result += String.valueOf(run(pareBits));
-                    pareBits = "";
-                    isParenthesis = false;
-                    continue;
+                    depth--;
+                    if(depth == 0) {
+                        // 괄호 닫힘 → 내부 계산 후 result에 추가
+                        result += String.valueOf(run(pareBits));
+                        pareBits = "";
+                        continue;
+                    } else {
+                        pareBits += sBits[i];
+                        continue;
+                    }
                 }
 
-                if(isParenthesis) {
+                if(depth > 0) {
                     pareBits += sBits[i];
-                }
-                else if(!isParenthesis) {
-                    pareBits = "";
+                } else {
                     result += sBits[i];
                 }
             }
