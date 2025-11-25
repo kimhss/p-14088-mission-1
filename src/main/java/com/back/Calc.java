@@ -11,30 +11,36 @@ public class Calc {
         }
 
         // -(10 + 5)
-        // (10 + 20) * 3
         // 괄호 벗기기 + 괄호 먼저 계산
         if(s.contains("(") && s.contains(")")) {
-            if (s.contains("*")) {
-                String answer = "";
-                String[] tmp = s.split("\\*");
-                for (String str : tmp) {
-                    str = str.trim();
-                    if (str.contains("(") && str.contains(")")) {
-                        answer += String.valueOf(run(str.replaceAll("[()]", "")));
-                    } else answer += " * " + str;
+            String result = "";
+            String pareBits = "";
+            boolean isParenthesis = false;
+            String[] sBits = s.split("");
+            for(int i = 0; i < sBits.length; i++) {
+                if(sBits[i].equals("(")) {
+                    isParenthesis = true;
+                    continue;
+
+                }
+                if(sBits[i].equals(")")) {
+                    if(!isParenthesis) continue;
+                    result += String.valueOf(run(pareBits));
+                    pareBits = "";
+                    isParenthesis = false;
+                    continue;
                 }
 
-                return run(answer);
+                if(isParenthesis) {
+                    pareBits += sBits[i];
+                }
+                else if(!isParenthesis) {
+                    pareBits = "";
+                    result += sBits[i];
+                }
             }
-            else if (s.contains("-(")) {
-                s = s.replaceAll("[()]", "");
-                s = s.replace("+ ", "+ -");
-                return run(s);
-            }
-            else {
-                String tmp = s.replaceAll("[()]", "");
-                return run(tmp);
-            }
+
+            return run(result);
         }
 
         // 10 + 5 * 2
@@ -57,6 +63,6 @@ public class Calc {
             return mul;
         }
 
-        return sum;
+        return Integer.parseInt(s);
     }
 }
